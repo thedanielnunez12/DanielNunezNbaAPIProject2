@@ -83,19 +83,23 @@ elif page == "Team Analysis":
 
         data = get_team_games(team_id)
 
-        st.subheader(selected_team)
+        if data.empty:
+          st.error("Unable to load NBA data. Please try again later.")
 
-        st.dataframe(
-            data[
-                [
-                    "GAME_DATE",
-                    "MATCHUP",
-                    "WL",
-                    "PTS",
-                    "PLUS_MINUS"
-                ]
+        else:
+          st.subheader(selected_team)
+
+          st.dataframe(
+              data[
+                  [
+                      "GAME_DATE",
+                      "MATCHUP",
+                      "WL",
+                      "PTS",
+                      "PLUS_MINUS"
             ]
-        )
+        ]
+    )
 
 
 
@@ -276,6 +280,10 @@ elif page == "Statistics":
         team_data = get_team_games(
             teams[selected_team]
         )
+
+        if team_data.empty:
+           st.error("Unable to load NBA statistics.")
+           st.stop()
 
         st.success("Statistics generated successfully!")
 
